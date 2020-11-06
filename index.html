@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <title>Dramco Christmas Room</title>
+
+        <style>
+            html, body {
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            #renderCanvas {
+                width: 100%;
+                height: 100%;
+                touch-action: none;
+            }
+        </style>
+
+        <script src="https://preview.babylonjs.com/babylon.js"></script>
+        <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+        <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+    </head>
+
+   <body>
+
+    <canvas id="renderCanvas" touch-action="none"></canvas> <!-- touch-action="none" for best results from PEP -->
+
+    <script>
+        var canvas = document.getElementById("renderCanvas"); // Get the canvas element
+        var engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true }); // Generate the BABYLON 3D engine
+
+        /******* Add the create scene function ******/
+        var createScene = function () {
+
+            // Create the scene space
+            var scene = new BABYLON.Scene(engine);
+            scene.clearColor = new BABYLON.Color3(0.3, 0, 0);
+
+            var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, new BABYLON.Vector3(0,0,40), scene);
+
+            // WITH VR GLASSES
+            // var camera = new BABYLON.VRDeviceOrientationArcRotateCamera ("Camera", Math.PI/2, Math.PI/4, 25, new BABYLON.Vector3 (0, 0, 0), scene);
+
+            // Parameters : name, position, scene
+            // var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(0, 0, -80), scene);
+            // Targets the camera to a particular position. In this case the scene origin
+            // camera.setTarget(BABYLON.Vector3.Zero());
+
+            // Attach the camera to the canvas
+            camera.attachControl(canvas, true);
+
+
+            // Add lights to the scene
+            var light1 = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 1, 0), scene);
+            var light2 = new BABYLON.PointLight("light2", new BABYLON.Vector3(0, 1, -1), scene);
+
+            // Add the spheres
+			var redMat = new BABYLON.StandardMaterial("redMat", scene);
+			redMat.emissiveColor = new BABYLON.Color3(1, 0, 0);
+	
+			var greenMat = new BABYLON.StandardMaterial("greenMat", scene);
+			greenMat.emissiveColor = new BABYLON.Color3(0, 1, 0);
+	
+			var blueMat = new BABYLON.StandardMaterial("blueMat", scene);
+			blueMat.emissiveColor = new BABYLON.Color3(0, 0, 1);
+	
+			var blue2Mat = new BABYLON.StandardMaterial("whiteMat", scene);
+			blue2Mat.emissiveColor = new BABYLON.Color3(0, 0.4, 0.5);
+
+            var redSphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2}, scene);
+	 		redSphere.material = redMat;
+
+			var greenSphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2}, scene);
+			greenSphere.material = greenMat;
+	
+			var blueSphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2}, scene);
+			blueSphere.material = blueMat;
+	
+			var blue2MatSphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2}, scene);
+			blue2MatSphere.material = blue2Mat;
+
+            // Move the spheres
+            redSphere.position.x = -3;
+            redSphere.position.y = 5;
+            greenSphere.position.x = -5;
+            greenSphere.position.y = -1;
+            blueSphere.position.x = 10;
+            blueSphere.position.y = 5;
+            blue2MatSphere.position.x = 5;
+            blue2MatSphere.position.y = 6;
+
+            // Add the 360 image
+            photoDome = new BABYLON.PhotoDome("testdome", "https://image.shutterstock.com/image-illustration/christmas-interior-fireplace-3d-illustration-600w-766212310.jpg", { resolution: 128, size: 1000 }, scene);
+
+            
+            // ./Images/Dramco_logo as location DOESN'T work for some reason
+
+            var pic_KULEUVEN_logo = new BABYLON.StandardMaterial("photo", scene);
+
+            pic_KULEUVEN_logo.diffuseTexture = new BABYLON.Texture("https://upload.wikimedia.org/wikipedia/commons/4/49/KU_Leuven_logo.svg", scene);
+
+            var options_KULEUVEN_logo = {
+                width: 15,
+                height: 6,
+                depth: 1,
+            };
+        
+            var box_kuleuven = BABYLON.MeshBuilder.CreateBox('box1', options_KULEUVEN_logo, scene);
+            box_kuleuven.material = pic_KULEUVEN_logo;
+            box_kuleuven.position.x = 5
+            box_kuleuven.rotation.y = Math.PI
+
+			//Creation of a repeated textured material
+			var kerstboom = new BABYLON.StandardMaterial("kerstboom", scene);
+			kerstboom.diffuseTexture = new BABYLON.Texture("https://lh3.googleusercontent.com/proxy/z7VBZB9e88bjx8l4MVM-_FQpbGH0ZRHjiV5VzyiKfb9pbXl9OILcDZ10FOafpX3uoZ5n3B5eBS3yxtGZbkRd_W4ffinrB2rusji2JE3VWAUa0nr1-CEy4O7mk2NxTQ8-KLM0kZYkMA", scene);
+			//kertboom.specularColor = new BABYLON.Color3(0, 0, 0);
+			kerstboom.backFaceCulling = false; //Allways show the front and the back of an element
+			kerstboom.diffuseTexture.hasAlpha = true;
+			kerstboom.backFaceCulling = false;
+
+			//Creation of a plane
+			var tree_plane = BABYLON.Mesh.CreatePlane("plane", 120, scene);
+			tree_plane.material = kerstboom;
+			tree_plane.position.x = 50;
+			tree_plane.rotation.y = -Math.PI/10
+
+
+            return scene;
+        };
+        /******* End of the create scene function ******/
+
+        var scene = createScene(); //Call the createScene function
+
+        // Register a render loop to repeatedly render the scene
+        engine.runRenderLoop(function () {
+                scene.render();
+        });
+
+        // Watch for browser/canvas resize events
+        window.addEventListener("resize", function () {
+                engine.resize();
+        });
+    </script>
+
+   </body>
+
+</html>
