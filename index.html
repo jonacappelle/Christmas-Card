@@ -123,9 +123,10 @@
 			kerstboom.backFaceCulling = false; //Allways show the front and the back of an element
 			kerstboom.diffuseTexture.hasAlpha = true;
 			kerstboom.backFaceCulling = false;
+
 			
 			//Creation of a plane
-			var tree_plane = BABYLON.Mesh.CreatePlane("plane", {width: 75, height: 124}, scene);
+			var tree_plane = BABYLON.MeshBuilder.CreatePlane("plane", {width: 75, height: 124}, scene);
 			tree_plane.material = kerstboom;
 			tree_plane.position.x = 50;
 			tree_plane.rotation.y = -Math.PI/10
