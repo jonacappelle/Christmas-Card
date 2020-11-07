@@ -187,14 +187,19 @@
 
 		    var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane_text);
 
-		    var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Merry Christmas !");
+		    var music = new BABYLON.Sound("Music", "./Songs/song.wav", scene, null, {
+  				loop: true,
+  				autoplay: true
+			});
+
+		    var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Press me !");
 		    button1.width = 10;
 		    button1.height = 2;
-		    button1.color = "Christmas_red";
-		    button1.fontSize = 100;
-		    button1.background = "Christmas_red";
+		    button1.color = "red";
+		    button1.fontSize = 50;
+		    button1.background = "red";
 		    button1.onPointerUpObservable.add(function() {
-		        alert("Song!");
+		        music.play();
 		    });
 		    advancedTexture.addControl(button1);
 
