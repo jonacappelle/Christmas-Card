@@ -132,6 +132,22 @@
             box_DRAMCO.position.y = 13
             box_DRAMCO.rotation.y = Math.PI
 
+            var pic_WC_logo = new BABYLON.StandardMaterial("photo", scene);
+
+            pic_WC_logo.diffuseTexture = new BABYLON.Texture("./Images/WC_logo.png", scene);
+
+            var options_WC_logo = {
+                width: 15,
+                height: 6,
+                depth: 1,
+            };
+        
+            var box_WC = BABYLON.MeshBuilder.CreateBox('box3', options_WC_logo, scene);
+            box_WC.material = pic_WC_logo;
+            box_WC.position.x = 5
+            box_WC.position.y = -10
+            box_WC.rotation.y = Math.PI
+
 
 			//Creation of a repeated textured material
 			var kerstboom = new BABYLON.StandardMaterial("kerstboom", scene);
