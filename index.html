@@ -96,7 +96,7 @@
             blue2MatSphere.position.y = 6;
 
             // Add the 360 image
-            photoDome = new BABYLON.PhotoDome("testdome", "https://image.shutterstock.com/image-illustration/christmas-interior-fireplace-3d-illustration-600w-766212310.jpg", { resolution: 128, size: 1000 }, scene);
+            photoDome = new BABYLON.PhotoDome("testdome", "./Images/BackGround.jpg", { resolution: 128, size: 1000 }, scene);
 
             
             // ./Images/Dramco_logo as location DOESN'T work for some reason
@@ -115,6 +115,23 @@
             box_kuleuven.material = pic_KULEUVEN_logo;
             box_kuleuven.position.x = 5
             box_kuleuven.rotation.y = Math.PI
+
+            var pic_DRAMCO_logo = new BABYLON.StandardMaterial("photo", scene);
+
+            pic_KULEUVEN_logo.diffuseTexture = new BABYLON.Texture("./Images/Dramco_logo.jpg", scene);
+
+            var options_DRAMCO_logo = {
+                width: 10,
+                height: 10,
+                depth: 1,
+            };
+        
+            var box_DRAMCO = BABYLON.MeshBuilder.CreateBox('box2', options_DRAMCO_logo, scene);
+            box_DRAMCO.material = pic_DRAMCO_logo;
+            box_DRAMCO.position.x = 5
+            box_DRAMCO.position.y = 10
+            box_DRAMCO.rotation.y = Math.PI
+
 
 			//Creation of a repeated textured material
 			var kerstboom = new BABYLON.StandardMaterial("kerstboom", scene);
