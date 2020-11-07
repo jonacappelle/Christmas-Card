@@ -100,13 +100,13 @@
 
             // Move the spheres
             redSphere.position.x = -3;
-            redSphere.position.y = 25;
+            redSphere.position.y = 18;
             greenSphere.position.x = -5;
-            greenSphere.position.y = 19;
+            greenSphere.position.y = 12;
             blueSphere.position.x = 10;
-            blueSphere.position.y = 25;
+            blueSphere.position.y = 18;
             blue2MatSphere.position.x = 5;
-            blue2MatSphere.position.y = 26;
+            blue2MatSphere.position.y = 19;
 
             // Add the 360 image
             photoDome = new BABYLON.PhotoDome("testdome", "./Images/BackGround.jpg", { resolution: 128, size: 1000 }, scene);
@@ -178,12 +178,12 @@
 			tree_plane.rotation.y = -Math.PI/10
 
 			// GUI for merry christmass button
-		    var plane_text = BABYLON.MeshBuilder.CreatePlane("plane2", {width: 7, height: 3}, scene);
-		    plane_text.position.y = 20;
-		    plane_text.position.x = 5;
-		    plane_text.rotation.y = Math.PI;
+		    var plane_button = BABYLON.MeshBuilder.CreatePlane("plane2", {width: 18, height: 7}, scene);
+		    plane_button.position.y = 0;
+		    plane_button.position.x = -30;
+		    plane_button.rotation.y = Math.PI + Math.PI/10;
 
-		    var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane_text);
+		    var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane_button);
 
 		    var music = new BABYLON.Sound("Music", "./Songs/song.wav", scene, null, {
   				loop: true,
@@ -191,11 +191,11 @@
 			});
 
 		    var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Press me !");
-		    button1.width = 7;
-		    button1.height = 3;
+		    button1.width = 18;
+		    button1.height = 7;
 		    button1.color = "white";
 		    button1.fontSize = 200;
-		    button1.background = "red";
+		    button1.background = "darkblue";
 		    button1.onPointerUpObservable.add(function() {
 		        alert("Merry Christmas!");
 		    });
