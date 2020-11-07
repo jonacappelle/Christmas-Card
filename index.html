@@ -103,7 +103,7 @@
 
             var pic_KULEUVEN_logo = new BABYLON.StandardMaterial("photo", scene);
 
-            pic_KULEUVEN_logo.diffuseTexture = new BABYLON.Texture("https://upload.wikimedia.org/wikipedia/commons/4/49/KU_Leuven_logo.svg", scene);
+            pic_KULEUVEN_logo.diffuseTexture = new BABYLON.Texture("./Images/KULEUVEN_logo.png", scene);
 
             var options_KULEUVEN_logo = {
                 width: 15,
@@ -125,7 +125,7 @@
 			kerstboom.backFaceCulling = false;
 			
 			//Creation of a plane
-			var tree_plane = BABYLON.Mesh.CreatePlane("plane", 150, scene);
+			var tree_plane = BABYLON.Mesh.CreatePlane("plane", {width: 75, height: 124}, scene);
 			tree_plane.material = kerstboom;
 			tree_plane.position.x = 50;
 			tree_plane.rotation.y = -Math.PI/10
