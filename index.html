@@ -118,13 +118,12 @@
 
 			//Creation of a repeated textured material
 			var kerstboom = new BABYLON.StandardMaterial("kerstboom", scene);
-			kerstboom.diffuseTexture = new BABYLON.Texture("https://lh3.googleusercontent.com/proxy/z7VBZB9e88bjx8l4MVM-_FQpbGH0ZRHjiV5VzyiKfb9pbXl9OILcDZ10FOafpX3uoZ5n3B5eBS3yxtGZbkRd_W4ffinrB2rusji2JE3VWAUa0nr1-CEy4O7mk2NxTQ8-KLM0kZYkMA", scene);
+			kerstboom.diffuseTexture = new BABYLON.Texture("./Images/tree.png", scene);
 			//kertboom.specularColor = new BABYLON.Color3(0, 0, 0);
 			kerstboom.backFaceCulling = false; //Allways show the front and the back of an element
 			kerstboom.diffuseTexture.hasAlpha = true;
 			kerstboom.backFaceCulling = false;
 			
-
 			//Creation of a plane
 			var tree_plane = BABYLON.Mesh.CreatePlane("plane", 120, scene);
 			tree_plane.material = kerstboom;
