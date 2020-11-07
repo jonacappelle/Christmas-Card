@@ -23,8 +23,21 @@
         </style>
 
         <script src="https://preview.babylonjs.com/babylon.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
         <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
         <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+        <script src="https://preview.babylonjs.com/ammo.js"></script>
+        <script src="https://preview.babylonjs.com/cannon.js"></script>
+        <script src="https://preview.babylonjs.com/Oimo.js"></script>
+        <script src="https://preview.babylonjs.com/earcut.min.js"></script>
+        <script src="https://preview.babylonjs.com/babylon.js"></script>
+        <script src="https://preview.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+        <script src="https://preview.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+        <script src="https://preview.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+        <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.js"></script>
+        <script src="https://preview.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
+        <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+        <script src="https://preview.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
     </head>
 
    <body>
@@ -87,13 +100,13 @@
 
             // Move the spheres
             redSphere.position.x = -3;
-            redSphere.position.y = 5;
+            redSphere.position.y = 25;
             greenSphere.position.x = -5;
-            greenSphere.position.y = -1;
+            greenSphere.position.y = 19;
             blueSphere.position.x = 10;
-            blueSphere.position.y = 5;
+            blueSphere.position.y = 25;
             blue2MatSphere.position.x = 5;
-            blue2MatSphere.position.y = 6;
+            blue2MatSphere.position.y = 26;
 
             // Add the 360 image
             photoDome = new BABYLON.PhotoDome("testdome", "./Images/BackGround.jpg", { resolution: 128, size: 1000 }, scene);
@@ -129,7 +142,7 @@
             var box_DRAMCO = BABYLON.MeshBuilder.CreateBox('box2', options_DRAMCO_logo, scene);
             box_DRAMCO.material = pic_DRAMCO_logo;
             box_DRAMCO.position.x = 5
-            box_DRAMCO.position.y = 13
+            box_DRAMCO.position.y = 10
             box_DRAMCO.rotation.y = Math.PI
 
             var pic_WC_logo = new BABYLON.StandardMaterial("photo", scene);
@@ -163,6 +176,27 @@
 			tree_plane.material = kerstboom;
 			tree_plane.position.x = 50;
 			tree_plane.rotation.y = -Math.PI/10
+
+			// GUI for merry christmass button
+		    var plane_text = BABYLON.MeshBuilder.CreatePlane("plane2", {width: 10, height: 3}, scene);
+		    plane_text.position.y = 20;
+		    plane_text.position.x = 5;
+
+		    var Christmas_red = new BABYLON.StandardMaterial("redMat_christ", scene);
+			Christmas_red.emissiveColor = new BABYLON.Color3(0.59, 0.04, 0.04);
+
+		    var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane_text);
+
+		    var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Merry Christmas !");
+		    button1.width = 10;
+		    button1.height = 2;
+		    button1.color = "Christmas_red";
+		    button1.fontSize = 100;
+		    button1.background = "Christmas_red";
+		    button1.onPointerUpObservable.add(function() {
+		        alert("Song!");
+		    });
+		    advancedTexture.addControl(button1);
 
 
             return scene;
