@@ -157,9 +157,9 @@
         
             var box_WC = BABYLON.MeshBuilder.CreateBox('box3', options_WC_logo, scene);
             box_WC.material = pic_WC_logo;
-            box_WC.position.x = 5
-            box_WC.position.y = -10
-            box_WC.rotation.y = Math.PI
+            box_WC.position.x = 5;
+            box_WC.position.y = -10;
+            box_WC.rotation.y = Math.PI;
 
 
 			//Creation of a repeated textured material
@@ -178,12 +178,10 @@
 			tree_plane.rotation.y = -Math.PI/10
 
 			// GUI for merry christmass button
-		    var plane_text = BABYLON.MeshBuilder.CreatePlane("plane2", {width: 10, height: 3}, scene);
+		    var plane_text = BABYLON.MeshBuilder.CreatePlane("plane2", {width: 7, height: 3}, scene);
 		    plane_text.position.y = 20;
 		    plane_text.position.x = 5;
-
-		    var Christmas_red = new BABYLON.StandardMaterial("redMat_christ", scene);
-			Christmas_red.emissiveColor = new BABYLON.Color3(0.59, 0.04, 0.04);
+		    plane_text.rotation.y = Math.PI;
 
 		    var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane_text);
 
@@ -193,10 +191,10 @@
 			});
 
 		    var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Press me !");
-		    button1.width = 10;
-		    button1.height = 2;
-		    button1.color = "red";
-		    button1.fontSize = 50;
+		    button1.width = 7;
+		    button1.height = 3;
+		    button1.color = "white";
+		    button1.fontSize = 200;
 		    button1.background = "red";
 		    button1.onPointerUpObservable.add(function() {
 		        alert("Merry Christmas!");
