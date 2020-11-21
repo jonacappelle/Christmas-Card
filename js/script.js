@@ -257,7 +257,8 @@ function addCamera (scene, canvas) {
 function addPhotoDome (scene) {
   //new BABYLON.PhotoDome("testdome", "./Images/BackGround.jpg", { resolution: 256, size: 1000 }, scene)
   //new BABYLON.PhotoDome("testdome", "./Images/BackGround.jpg", { resolution: 512, size: 1000 }, scene);
-  new BABYLON.PhotoDome("testdome", "./Images/milky-way-4k.png", { resolution: 500, size: 2000 }, scene);
+  // new BABYLON.PhotoDome("testdome", "./Images/milky-way-4k.png", { resolution: 500, size: 2000 }, scene);
+  new BABYLON.PhotoDome("testdome", "./Images/MIDAS_360.jpg", { resolution: 500, size: 2000 }, scene);
 }
 
 
