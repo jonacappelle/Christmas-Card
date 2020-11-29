@@ -1,6 +1,11 @@
 var canvas = document.getElementById("renderCanvas"); // Get the canvas element
 var engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true }); // Generate the BABYLON 3D engine
 
+// Define global constants
+const NUMBER_OF_FACES = 3; // Images must be labeled as "0.png" to "<NUMBER_OF_FACES-1>.png"
+const NUMBER_OF_FACE_REPETITIONS = 2;
+const NUMBER_OF_UNIQUE_LOGOS = 3; // Images must be labeled as "0.png" to "<NUMBER_OF_UNIQUE_LOGOS-1>.png"
+const NUMBER_OF_LOGO_REPETITIONS = 10;
 
 // Create and populate the scene
 var scene = createAndPopulateScene(engine, canvas);
@@ -26,37 +31,78 @@ function createAndPopulateScene (engine, canvas) {
   var scene = new BABYLON.Scene(engine);
   scene.clearColor = new BABYLON.Color3(0.3, 0, 0);
 
-  draw_bottom_layer(scene, 30)
-  draw_top_layer(scene, 20)
-  addCamera(scene, canvas)
-  addLights(scene)
-  addPhotoDome(scene)
-  addMusic(scene)
+  // Determine the theme in random fashion
+  var theme = 'Dark'
+  if (Math.random() < 0.5) {
+    theme = 'Light'
+  }
+
+  // addMusic(scene)
+  add_camera(scene, canvas)
+  add_lights(scene)
+  draw_background(scene, theme)
+  draw_bottom_layer(scene, theme)
+  draw_top_layer(scene, theme)
 
   return scene;
-};
+}
 
 
-/* Draw the bottom layer, containing various small logos.
- * Make sure the plane size isn't too large to avoid overlapping with planes of the same and of other layers.
+/* Add camera (view).
  *
  * @param {object} scene Babylon scene instance.
- * @param {number} number_of_planes Number of planes to fetch and draw.
+ * @param {object} material DOM canvas pointer.
  */
-function draw_bottom_layer( scene, number_of_planes ) {
+function add_camera (scene, canvas) {
+  // Two-image display, needs cardboard viewer (VR). On PC change the view using the mouse.
+  //var camera = new BABYLON.VRDeviceOrientationFreeCamera("DevOr_camera", new BABYLON.Vector3(0, 0, 0), scene);
 
-  let plane_size = 1.0
-  let randomize_plane_size = true;
+  // Single-image device orientation tracking view. On PC change the view using the mouse.
+  let camera = new BABYLON.DeviceOrientationCamera("DevOr_camera", new BABYLON.Vector3(0, 0, 0), scene);
 
-  let material = new BABYLON.StandardMaterial("", scene);
-  material.specularColor = new BABYLON.Color3(0, 0, 0); // Disable highlights in the material (flat image)
-  material.backFaceCulling = false; // Allways show the front and the back of an element
-  let texture = new BABYLON.Texture("Images/logo-white.png", scene);
-  texture.hasAlpha = true;
-  material.diffuseTexture = texture
+  // Defines the target the camera should look at.
+  camera.setTarget(new BABYLON.Vector3(0.1, 0, 0));
 
-  draw_almost_equidistant_planes_on_sphere( scene, material, number_of_planes, plane_size, randomize_plane_size )
+  // Attach the camera to the canvas
+  camera.attachControl(canvas, true);
+}
 
+
+/* Add lights (otherwise the objects won't be visible).
+ *
+ * @param {object} scene Babylon scene instance.
+ */
+function add_lights (scene) {
+  // new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 0, 0), scene);
+  // new BABYLON.PointLight("light2", new BABYLON.Vector3(0, 1, -1), scene);
+  // new BABYLON.PointLight("light2", new BABYLON.Vector3(0, 0, 0), scene);
+  var light = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(0,0,0), scene);
+  var light = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0,0,0), scene);
+  light.intensity = 1
+}
+
+
+/* Add spherical background projection.
+ *
+ * @param {object} scene Babylon scene instance.
+ */
+function draw_background (scene, theme) {
+  let path = "./Image/Background/" + theme + "/" + Math.round(Math.random()) + ".jpg";
+  // let photoDome = new BABYLON.PhotoDome("testdome", path, { resolution: 500, size: 2000 }, scene);
+  let photoDome = new BABYLON.PhotoDome("testdome", path, scene);
+  // console.log(photoDome)
+}
+
+
+/* Add fancy pants music.
+ *
+ * @param {object} scene Babylon scene instance.
+ */
+function addMusic (scene) {
+  new BABYLON.Sound("Music", "./Songs/song.wav", scene, null, {
+    loop: true,
+    autoplay: true
+  });
 }
 
 
@@ -64,19 +110,71 @@ function draw_bottom_layer( scene, number_of_planes ) {
  * Make sure the plane size isn't too large to avoid overlapping with planes of the same and of other layers.
  *
  * @param {object} scene Babylon scene instance.
- * @param {number} number_of_planes Number of planes to fetch and draw.
+ * @param {str} theme 'Light' or 'Dark' theme identifier.
  */
-function draw_top_layer( scene, number_of_planes ) {
+function draw_top_layer( scene, theme ) {
 
   let plane_size = 2.5
   let randomize_plane_size = false;
 
-  let material = new BABYLON.StandardMaterial("", scene);
-  material.specularColor = new BABYLON.Color3(0, 0, 0); // Disable highlights in the material (flat image)
-  material.backFaceCulling = false; // Allways show the front and the back of an element
-  let texture = new BABYLON.Texture("Images/will_smith_outline.png", scene);
-  texture.hasAlpha = true;
-  material.diffuseTexture = texture
+  let material = []
+  let texture;
+
+  // Populate material with face images (each face once)
+  let i;
+  for (i = 0; i < NUMBER_OF_FACES; i++) {
+    material.push(new BABYLON.StandardMaterial("", scene));
+    material[i].specularColor = new BABYLON.Color3(0, 0, 0); // Disable highlights in the material (flat image)
+    material[i].backFaceCulling = false; // Allways show the front and the back of an element
+    texture = new BABYLON.Texture("Image/Face/" + theme + "/" + i + ".png", scene);
+    texture.hasAlpha = true;
+    material[i].diffuseTexture = texture
+    console.log(texture.url)
+  }
+
+  // Repeat materials k-times (each face k-times)
+  // let k;
+  // let tmp = material.slice()
+  // for (k=0; k<NUMBER_OF_FACE_REPETITIONS; k++) {
+  //   material = material.concat(tmp)
+  // }
+
+  // Set the repetition of faces
+  // If not a multiple of the number of faces, some faces may be represented by one instance more than others
+  let number_of_planes = NUMBER_OF_FACE_REPETITIONS * NUMBER_OF_FACES;
+
+  draw_almost_equidistant_planes_on_sphere( scene, material, number_of_planes, plane_size, randomize_plane_size )
+
+}
+
+
+/* Draw the bottom layer, containing various small logos.
+ * Make sure the plane size isn't too large to avoid overlapping with planes of the same and of other layers.
+ *
+ * @param {object} scene Babylon scene instance.
+ * @param {str} theme 'Light' or 'Dark' theme identifier.
+ */
+function draw_bottom_layer( scene, theme ) {
+
+  let plane_size = 1.0
+  let randomize_plane_size = true;
+
+  let material = []
+  let texture;
+
+  let i;
+  for (i=0; i<NUMBER_OF_UNIQUE_LOGOS; i++) {
+    material.push(new BABYLON.StandardMaterial("", scene));
+    material[i].specularColor = new BABYLON.Color3(0, 0, 0); // Disable highlights in the material (flat image)
+    material[i].backFaceCulling = false; // Allways show the front and the back of an element
+    texture = new BABYLON.Texture("Image/Logo/" + theme + "/" + i + ".png", scene);
+    texture.hasAlpha = true;
+    material[i].diffuseTexture = texture
+  }
+
+  // Set the repetition of logos
+  // If not a multiple of the number of logos, some logos may be represented by one instance more than others
+  let number_of_planes = NUMBER_OF_LOGO_REPETITIONS * NUMBER_OF_UNIQUE_LOGOS;
 
   draw_almost_equidistant_planes_on_sphere( scene, material, number_of_planes, plane_size, randomize_plane_size )
 
@@ -100,6 +198,7 @@ function draw_almost_equidistant_planes_on_sphere ( scene, material, number_of_p
   let plane;
   let current_plane_size = plane_size;
 
+  let k = 0;
   for (let i=0; i<number_of_planes; i++) {
 
     // Add a random factor to plane sizes
@@ -110,7 +209,8 @@ function draw_almost_equidistant_planes_on_sphere ( scene, material, number_of_p
     // Create new object and associate with scene
     plane = BABYLON.MeshBuilder.CreatePlane( "plane", { size: current_plane_size }, scene );
 
-    plane.material = material // Associate plane with material (image)
+    plane.material = material[k] // Associate plane with material (image)
+    k = (k+1) % material.length // Roll over to repeat the material on multiple plaes
 
     // Position the current plane
     plane.position.x = coordinates[0][i];
@@ -124,9 +224,7 @@ function draw_almost_equidistant_planes_on_sphere ( scene, material, number_of_p
     plane.rotation.y = (coordinates[4][i] + Math.PI/2) % (2*Math.PI) // Theta value plus PI/2 and wrap around 2*PI
     // plane.rotation.y = Math.PI / 2 - Math.atan(plane.position.z / plane.position.x)
     // if ( plane.position.x < 0 ) { plane.rotation.y += Math.PI }
-
   }
-
 }
 
 
@@ -228,61 +326,3 @@ function range(start, stop, step) {
 
   return result;
 };
-
-
-/* Add camera (view).
- *
- * @param {object} scene Babylon scene instance.
- * @param {object} material DOM canvas pointer.
- */
-function addCamera (scene, canvas) {
-  // Two-image display, needs cardboard viewer (VR). On PC change the view using the mouse.
-  //var camera = new BABYLON.VRDeviceOrientationFreeCamera("DevOr_camera", new BABYLON.Vector3(0, 0, 0), scene);
-
-  // Single-image device orientation tracking view. On PC change the view using the mouse.
-  let camera = new BABYLON.DeviceOrientationCamera("DevOr_camera", new BABYLON.Vector3(0, 0, 0), scene);
-
-  // Defines the target the camera should look at.
-  camera.setTarget(new BABYLON.Vector3(0.1, 0, 0));
-
-  // Attach the camera to the canvas
-  camera.attachControl(canvas, true);
-}
-
-
-/* Add spherical background projection.
- *
- * @param {object} scene Babylon scene instance.
- */
-function addPhotoDome (scene) {
-  //new BABYLON.PhotoDome("testdome", "./Images/BackGround.jpg", { resolution: 256, size: 1000 }, scene)
-  //new BABYLON.PhotoDome("testdome", "./Images/BackGround.jpg", { resolution: 512, size: 1000 }, scene);
-  // new BABYLON.PhotoDome("testdome", "./Images/milky-way-4k.png", { resolution: 500, size: 2000 }, scene);
-  new BABYLON.PhotoDome("testdome", "./Images/MIDAS_360.jpg", { resolution: 500, size: 2000 }, scene);
-}
-
-
-/* Add lights (otherwise the objects won't be visible).
- *
- * @param {object} scene Babylon scene instance.
- */
-function addLights (scene) {
-  // new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 0, 0), scene);
-  // new BABYLON.PointLight("light2", new BABYLON.Vector3(0, 1, -1), scene);
-  // new BABYLON.PointLight("light2", new BABYLON.Vector3(0, 0, 0), scene);
-  var light = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(0,0,0), scene);
-  var light = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0,0,0), scene);
-  light.intensity = 1
-}
-
-
-/* Add fancy pants music.
- *
- * @param {object} scene Babylon scene instance.
- */
-function addMusic (scene) {
-    new BABYLON.Sound("Music", "./Songs/song.wav", scene, null, {
-      loop: true,
-      autoplay: true
-    });
-}

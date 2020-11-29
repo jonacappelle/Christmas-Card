@@ -27,6 +27,21 @@
   <component name="ChangeListManager">
     <list default="true" id="a0ed8396-38bc-496d-a8ec-3a3c816c909c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/BackGround.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/Dramco_logo.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/MIDAS_360.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/WC_logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/kuleuven.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/logo-black.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/logo-grey.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/logo-white.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/milky-way-4k.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/tree.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/will_smith.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/will_smith_outline.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/will_smith_outline.xcf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/script.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -45,7 +60,14 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Images" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Images" />
+      <recent name="$PROJECT_DIR$/Images/Faces" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -56,7 +78,9 @@
       <option name="presentableId" value="Default" />
       <updated>1605087776413</updated>
       <workItem from="1605087778774" duration="22583000" />
-      <workItem from="1605985212680" duration="357000" />
+      <workItem from="1605985212680" duration="980000" />
+      <workItem from="1606315704664" duration="8000" />
+      <workItem from="1606640231610" duration="6885000" />
     </task>
     <servers />
   </component>

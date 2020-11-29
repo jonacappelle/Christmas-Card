@@ -1,23 +1,16 @@
-
-<!--
-
-*** GENERAL ***
-TO-DO: Enable full-screen on smartphones (no toolbar)
-To-Consider: Add button for switching to cardboard (VR) view on smartphones
-
-*** JS ***
-TO-DO: Enable the drawing of an arbitrary number of different images/materials (peoples faces and different logos) on a single layer
-To-Consider: Draw both layers (logos and faces) on a single multi-size layer to avoid object overlapping
-
--->
-
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
     <head>
 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <!-- Mobile friendly-->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Try to hide nav-bar etc. on mobile devices-->
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
 
         <title>Dramco Christmas Room</title>
 
@@ -27,9 +20,9 @@ To-Consider: Draw both layers (logos and faces) on a single multi-size layer to 
 
    <body>
 
+    <p id="musicCredits">Music: Andy Williams, It's The Most Wonderful Time Of The Year</p>
+
     <canvas id="renderCanvas" touch-action="none"></canvas> <!-- touch-action="none" for best results from PEP -->
-
-
 
     <script src="https://preview.babylonjs.com/babylon.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
