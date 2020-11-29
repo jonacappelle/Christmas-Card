@@ -1,5 +1,5 @@
-var canvas = document.getElementById("renderCanvas"); // Get the canvas element
-var engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true }); // Generate the BABYLON 3D engine
+let canvas = document.getElementById("renderCanvas"); // Get the canvas element
+let engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true }); // Generate the BABYLON 3D engine
 
 // Define global constants
 const NUMBER_OF_FACES = 3; // Images must be labeled as "0.png" to "<NUMBER_OF_FACES-1>.png"
@@ -8,7 +8,7 @@ const NUMBER_OF_UNIQUE_LOGOS = 3; // Images must be labeled as "0.png" to "<NUMB
 const NUMBER_OF_LOGO_REPETITIONS = 10;
 
 // Create and populate the scene
-var scene = createAndPopulateScene(engine, canvas);
+let scene = createAndPopulateScene(engine, canvas);
 
 // Register a render loop to repeatedly render the scene
 engine.runRenderLoop(function () {
@@ -28,11 +28,11 @@ window.addEventListener("resize", function () {
 function createAndPopulateScene (engine, canvas) {
 
   // Create the scene space
-  var scene = new BABYLON.Scene(engine);
+  let scene = new BABYLON.Scene(engine);
   scene.clearColor = new BABYLON.Color3(0.3, 0, 0);
 
   // Determine the theme in random fashion
-  var theme = 'Dark'
+  let theme = 'Dark'
   if (Math.random() < 0.5) {
     theme = 'Light'
   }
@@ -55,7 +55,7 @@ function createAndPopulateScene (engine, canvas) {
  */
 function add_camera (scene, canvas) {
   // Two-image display, needs cardboard viewer (VR). On PC change the view using the mouse.
-  //var camera = new BABYLON.VRDeviceOrientationFreeCamera("DevOr_camera", new BABYLON.Vector3(0, 0, 0), scene);
+  //let camera = new BABYLON.VRDeviceOrientationFreeCamera("DevOr_camera", new BABYLON.Vector3(0, 0, 0), scene);
 
   // Single-image device orientation tracking view. On PC change the view using the mouse.
   let camera = new BABYLON.DeviceOrientationCamera("DevOr_camera", new BABYLON.Vector3(0, 0, 0), scene);
@@ -73,11 +73,8 @@ function add_camera (scene, canvas) {
  * @param {object} scene Babylon scene instance.
  */
 function add_lights (scene) {
-  // new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 0, 0), scene);
-  // new BABYLON.PointLight("light2", new BABYLON.Vector3(0, 1, -1), scene);
-  // new BABYLON.PointLight("light2", new BABYLON.Vector3(0, 0, 0), scene);
-  var light = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(0,0,0), scene);
-  var light = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0,0,0), scene);
+  // let light = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(0,0,0), scene);
+  let light = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0,0,0), scene);
   light.intensity = 1
 }
 
@@ -116,6 +113,7 @@ function draw_top_layer( scene, theme ) {
 
   let plane_size = 2.5
   let randomize_plane_size = false;
+  let shuffle_material = true;
 
   let material = []
   let texture;
@@ -143,7 +141,7 @@ function draw_top_layer( scene, theme ) {
   // If not a multiple of the number of faces, some faces may be represented by one instance more than others
   let number_of_planes = NUMBER_OF_FACE_REPETITIONS * NUMBER_OF_FACES;
 
-  draw_almost_equidistant_planes_on_sphere( scene, material, number_of_planes, plane_size, randomize_plane_size )
+  draw_almost_equidistant_planes_on_sphere( scene, material, number_of_planes, plane_size, randomize_plane_size, shuffle_material );
 
 }
 
@@ -158,6 +156,7 @@ function draw_bottom_layer( scene, theme ) {
 
   let plane_size = 1.0
   let randomize_plane_size = true;
+  let shuffle_material = true;
 
   let material = []
   let texture;
@@ -176,7 +175,7 @@ function draw_bottom_layer( scene, theme ) {
   // If not a multiple of the number of logos, some logos may be represented by one instance more than others
   let number_of_planes = NUMBER_OF_LOGO_REPETITIONS * NUMBER_OF_UNIQUE_LOGOS;
 
-  draw_almost_equidistant_planes_on_sphere( scene, material, number_of_planes, plane_size, randomize_plane_size )
+  draw_almost_equidistant_planes_on_sphere( scene, material, number_of_planes, plane_size, randomize_plane_size, shuffle_material );
 
 }
 
@@ -184,16 +183,21 @@ function draw_bottom_layer( scene, theme ) {
 /* Draw (almost) equidistant planes on a sphere and add them to the scene.
  *
  * @param {object} scene Babylon scene instance.
- * @param {object} material Babylon material instance.
+ * @param {array} material Array of Babylon material instances.
  * @param {number} number_of_planes Number of planes to fetch and draw.
  * @param {number} plane_size The average size of a plane (make sure input images have square dimensions!).
  * @param {bool} randomize_plane_size Add random factor to plane sizes.
+ * @param {bool} shuffle_material Shuffle material array (randomly select material for a plane).
  * @return {array} Babylon coordinate system X, Y, Z component arrays and phi and theta angle arrays.
  */
-function draw_almost_equidistant_planes_on_sphere ( scene, material, number_of_planes, plane_size, randomize_plane_size ) {
+function draw_almost_equidistant_planes_on_sphere ( scene, material, number_of_planes, plane_size, randomize_plane_size, shuffle_material ) {
 
   // Fetch the plane center-point coordinates
   let coordinates = calc_almost_optimal_spherical_point_distribution(number_of_planes)
+
+  if (shuffle_material) {
+    material = shuffle_array(material)
+  }
 
   let plane;
   let current_plane_size = plane_size;
@@ -319,10 +323,37 @@ function range(start, stop, step) {
     return [];
   }
 
-  var result = [];
-  for (var i = start; step > 0 ? i < stop : i > stop; i += step) {
+  let result = [];
+  for (let i = start; step > 0 ? i < stop : i > stop; i += step) {
     result.push(i);
   }
 
   return result;
 };
+
+
+/* Shuffle the array's elements using the Fisher-Yates algorithm.
+ * Should be reasonably fast given only references are set.
+ * Inspired by: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+ *
+ * @param {array} array Array that needs shuffling.
+ * @return {array} Shuffled array.
+ */
+function shuffle_array(array) {
+  let currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}

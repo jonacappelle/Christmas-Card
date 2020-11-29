@@ -1,0 +1,5 @@
+# Webstorm temp files
+.idea/
+
+*.log
+
