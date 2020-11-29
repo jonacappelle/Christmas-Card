@@ -37,7 +37,7 @@ function createAndPopulateScene (engine, canvas) {
     theme = 'Light'
   }
 
-  // addMusic(scene)
+  addMusic(scene)
   add_camera(scene, canvas)
   add_lights(scene)
   draw_background(scene, theme)
