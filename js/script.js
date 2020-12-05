@@ -2,10 +2,10 @@ let canvas = document.getElementById("renderCanvas"); // Get the canvas element
 let engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true }); // Generate the BABYLON 3D engine
 
 // Define global constants
-const NUMBER_OF_FACES = 3; // Images must be labeled as "0.png" to "<NUMBER_OF_FACES-1>.png"
+const NUMBER_OF_FACES = 21; // Images must be labeled as "0.png" to "<NUMBER_OF_FACES-1>.png"
 const NUMBER_OF_FACE_REPETITIONS = 2;
 const NUMBER_OF_UNIQUE_LOGOS = 3; // Images must be labeled as "0.png" to "<NUMBER_OF_UNIQUE_LOGOS-1>.png"
-const NUMBER_OF_LOGO_REPETITIONS = 10;
+const NUMBER_OF_LOGO_REPETITIONS = 20;
 
 // Create and populate the scene
 let scene = createAndPopulateScene(engine, canvas);
