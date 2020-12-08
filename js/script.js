@@ -1,4 +1,5 @@
 
+// Safari on iOS checker
 $( document ).ready(function() {
 
   let ua = window.navigator.userAgent;
