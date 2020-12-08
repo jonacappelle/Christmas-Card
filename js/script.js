@@ -88,7 +88,6 @@ function draw_background (scene, theme) {
   let path = "./Image/Background/" + theme + "/" + Math.round(Math.random()) + ".jpg";
   // let photoDome = new BABYLON.PhotoDome("testdome", path, { resolution: 500, size: 2000 }, scene);
   let photoDome = new BABYLON.PhotoDome("testdome", path, scene);
-  // console.log(photoDome)
 }
 
 
@@ -114,7 +113,6 @@ function draw_monolayer( scene, theme ) {
   let plane_size = 2.5
   let randomize_plane_size = false;
   let shuffle_material = true;
-  // let shuffle_material = false;
 
   let material = []
   let texture;
@@ -128,11 +126,8 @@ function draw_monolayer( scene, theme ) {
       material[idx].specularColor = new BABYLON.Color3(0, 0, 0); // Disable highlights in the material (flat image)
       material[idx].backFaceCulling = false; // Allways show the front and the back of an element
       texture = new BABYLON.Texture("Image/Face/" + theme + "/" + i + ".png", scene);
-      // texture = new BABYLON.Texture("Image/Face/Light/5.png", scene);
       texture.hasAlpha = true;
       material[idx].diffuseTexture = texture
-      // console.log(texture.url)
-      // console.log(idx)
     }
   }
 
@@ -180,15 +175,7 @@ function draw_top_layer( scene, theme ) {
     texture = new BABYLON.Texture("Image/Face/" + theme + "/" + i + ".png", scene);
     texture.hasAlpha = true;
     material[i].diffuseTexture = texture
-    console.log(texture.url)
   }
-
-  // Repeat materials k-times (each face k-times)
-  // let k;
-  // let tmp = material.slice()
-  // for (k=0; k<NUMBER_OF_FACE_REPETITIONS; k++) {
-  //   material = material.concat(tmp)
-  // }
 
   // Set the repetition of faces
   // If not a multiple of the number of faces, some faces may be represented by one instance more than others
@@ -396,6 +383,7 @@ function shuffle_array(array) {
 
   let currentIndex, temporaryValue, randomIndex, i;
 
+  // Shuffle 50 times
   for (i=0; i<50; i++){
 
     currentIndex = array.length;
@@ -412,7 +400,6 @@ function shuffle_array(array) {
       array[currentIndex] = array[randomIndex];
       array[randomIndex] = temporaryValue;
     }
-    console.log(i)
   }
 
   return array;
