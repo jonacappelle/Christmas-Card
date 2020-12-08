@@ -7,12 +7,6 @@ $( document ).ready(function() {
   let webkit = !!ua.match(/WebKit/i); // Turn null into true or an object into false
   let iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
 
-  console.log(iOS)
-  console.log(webkit)
-  console.log(!ua.match(/CriOS/i))
-  console.log(ua)
-  alert("Is Safari on iOS: " + iOSSafari)
-
   if (iOSSafari == true) {
     $('#safariNotification').show()
   }
