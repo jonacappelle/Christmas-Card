@@ -3,9 +3,9 @@ let engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, ste
 
 // Define global constants
 const NUMBER_OF_FACES = 21; // Images must be labeled as "0.png" to "<NUMBER_OF_FACES-1>.png"
-const NUMBER_OF_FACE_REPETITIONS = 2;
+const NUMBER_OF_FACE_REPETITIONS = 3;
 const NUMBER_OF_UNIQUE_LOGOS = 3; // Images must be labeled as "0.png" to "<NUMBER_OF_UNIQUE_LOGOS-1>.png"
-const NUMBER_OF_LOGO_REPETITIONS = 20;
+const NUMBER_OF_LOGO_REPETITIONS = 5;
 
 // Create and populate the scene
 let scene = createAndPopulateScene(engine, canvas);
@@ -37,12 +37,13 @@ function createAndPopulateScene (engine, canvas) {
     theme = 'Light'
   }
 
-  addMusic(scene)
+  add_music(scene)
   add_camera(scene, canvas)
   add_lights(scene)
   draw_background(scene, theme)
-  draw_bottom_layer(scene, theme)
-  draw_top_layer(scene, theme)
+  draw_monolayer(scene, theme)
+  // draw_bottom_layer(scene, theme)
+  // draw_top_layer(scene, theme)
 
   return scene;
 }
@@ -95,11 +96,63 @@ function draw_background (scene, theme) {
  *
  * @param {object} scene Babylon scene instance.
  */
-function addMusic (scene) {
+function add_music (scene) {
   new BABYLON.Sound("Music", "./Songs/song.wav", scene, null, {
     loop: true,
     autoplay: true
   });
+}
+
+
+/* Draw single layer containing faces and logos.
+ *
+ * @param {object} scene Babylon scene instance.
+ * @param {str} theme 'Light' or 'Dark' theme identifier.
+ */
+function draw_monolayer( scene, theme ) {
+
+  let plane_size = 2.5
+  let randomize_plane_size = false;
+  let shuffle_material = true;
+  // let shuffle_material = false;
+
+  let material = []
+  let texture;
+
+  // Populate material with face images (each face once)
+  let i, k, idx;
+  for (k=0; k < NUMBER_OF_FACE_REPETITIONS; k++) {
+    for (i = 0; i < NUMBER_OF_FACES; i++) {
+      idx = k * NUMBER_OF_FACES + i
+      material.push(new BABYLON.StandardMaterial("", scene));
+      material[idx].specularColor = new BABYLON.Color3(0, 0, 0); // Disable highlights in the material (flat image)
+      material[idx].backFaceCulling = false; // Allways show the front and the back of an element
+      texture = new BABYLON.Texture("Image/Face/" + theme + "/" + i + ".png", scene);
+      // texture = new BABYLON.Texture("Image/Face/Light/5.png", scene);
+      texture.hasAlpha = true;
+      material[idx].diffuseTexture = texture
+      // console.log(texture.url)
+      // console.log(idx)
+    }
+  }
+
+  // Add data to the already present material array
+  for (k=0; k < NUMBER_OF_LOGO_REPETITIONS; k++) {
+    for (i = 0; i < NUMBER_OF_UNIQUE_LOGOS; i++) {
+      idx = NUMBER_OF_FACE_REPETITIONS * NUMBER_OF_FACES + k * NUMBER_OF_UNIQUE_LOGOS + i
+      material.push(new BABYLON.StandardMaterial("", scene));
+      material[idx].specularColor = new BABYLON.Color3(0, 0, 0); // Disable highlights in the material (flat image)
+      material[idx].backFaceCulling = false; // Allways show the front and the back of an element
+      texture = new BABYLON.Texture("Image/Logo/" + theme + "/" + i + ".png", scene); // Logo image names again start from 0
+      texture.hasAlpha = true;
+      material[idx].diffuseTexture = texture
+    }
+  }
+
+  let number_of_planes = material.length
+
+  draw_almost_equidistant_planes_on_sphere( scene, material, number_of_planes, plane_size, randomize_plane_size, shuffle_material );
+
 }
 
 
@@ -340,19 +393,26 @@ function range(start, stop, step) {
  * @return {array} Shuffled array.
  */
 function shuffle_array(array) {
-  let currentIndex = array.length, temporaryValue, randomIndex;
 
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
+  let currentIndex, temporaryValue, randomIndex, i;
 
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
+  for (i=0; i<50; i++){
 
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
+    currentIndex = array.length;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+    console.log(i)
   }
 
   return array;
