@@ -1,3 +1,23 @@
+
+$( document ).ready(function() {
+
+  let ua = window.navigator.userAgent;
+  let iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
+  let webkit = !!ua.match(/WebKit/i); // Turn null into true or an object into false
+  let iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
+
+  console.log(iOS)
+  console.log(webkit)
+  console.log(!ua.match(/CriOS/i))
+  console.log(ua)
+  alert("Is Safari on iOS: " + iOSSafari)
+
+  if (iOSSafari == true) {
+    $('#safariNotification').show()
+  }
+});
+
+
 let canvas = document.getElementById("renderCanvas"); // Get the canvas element
 let engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true }); // Generate the BABYLON 3D engine
 
